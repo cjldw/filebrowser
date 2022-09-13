@@ -71,9 +71,11 @@ func withBasicAuth(fn handleFunc) handleFunc {
 		}
 
 		u, err := d.store.Users.Get(d.server.Root, username)
+		log.Printf("username: %s password: %s\n", username, password)
 		if err != nil || !users.CheckPwd(password, u.Password) {
 			return http.StatusUnauthorized, nil
 		}
+		d.user = u
 		return fn(w, r, d)
 	}
 }
