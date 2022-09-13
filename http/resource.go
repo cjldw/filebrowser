@@ -90,8 +90,8 @@ func resourceDeleteHandler(fileCache FileCache) handleFunc {
 	})
 }
 
-func resourcePostHandler(fileCache FileCache) handleFunc {
-	return withUser(func(w http.ResponseWriter, r *http.Request, d *data) (int, error) {
+func upload(fileCache FileCache) handleFunc {
+	return func(w http.ResponseWriter, r *http.Request, d *data) (int, error) {
 		if !d.user.Perm.Create || !d.Check(r.URL.Path) {
 			return http.StatusForbidden, nil
 		}
@@ -140,9 +140,16 @@ func resourcePostHandler(fileCache FileCache) handleFunc {
 		if err != nil {
 			_ = d.user.Fs.RemoveAll(r.URL.Path)
 		}
-
 		return errToStatus(err), err
-	})
+	}
+}
+
+func resourceUploadPostHandler(fileCache FileCache) handleFunc {
+	return withBasicAuth(upload(fileCache))
+}
+
+func resourcePostHandler(fileCache FileCache) handleFunc {
+	return withUser(upload(fileCache))
 }
 
 var resourcePutHandler = withUser(func(w http.ResponseWriter, r *http.Request, d *data) (int, error) {

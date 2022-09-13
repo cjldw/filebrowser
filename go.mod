@@ -31,7 +31,7 @@ require (
 )
 
 require (
-	github.com/andybalholm/brotli v1.0.1 // indirect
+	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dsnet/compress v0.0.2-0.20210315054119-f66993602bf5 // indirect
 	github.com/dsoprea/go-logging v0.0.0-20200517223158-a10564966e9d // indirect
@@ -40,7 +40,6 @@ require (
 	github.com/go-errors/errors v1.1.1 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/golang/geo v0.0.0-20200319012246-673a6f80352d // indirect
-	github.com/golang/snappy v0.0.2 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/klauspost/compress v1.11.4 // indirect

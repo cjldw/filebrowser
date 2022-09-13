@@ -63,6 +63,21 @@ func (e extractor) ExtractToken(r *http.Request) (string, error) {
 	return "", request.ErrNoTokenInRequest
 }
 
+func withBasicAuth(fn handleFunc) handleFunc {
+	return func(w http.ResponseWriter, r *http.Request, d *data) (int, error) {
+		username, password, ok := r.BasicAuth()
+		if username == "" || password == "" || !ok {
+			return http.StatusUnauthorized, nil
+		}
+
+		u, err := d.store.Users.Get(d.server.Root, username)
+		if err != nil || !users.CheckPwd(password, u.Password) {
+			return http.StatusUnauthorized, nil
+		}
+		return fn(w, r, d)
+	}
+}
+
 func withUser(fn handleFunc) handleFunc {
 	return func(w http.ResponseWriter, r *http.Request, d *data) (int, error) {
 		keyFunc := func(token *jwt.Token) (interface{}, error) {
