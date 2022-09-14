@@ -1,11 +1,10 @@
 package http
 
 import (
+	"fmt"
+	"github.com/tomasen/realip"
 	"log"
 	"net/http"
-	"strconv"
-
-	"github.com/tomasen/realip"
 
 	"github.com/filebrowser/filebrowser/v2/rules"
 	"github.com/filebrowser/filebrowser/v2/runner"
@@ -71,7 +70,7 @@ func handle(fn handleFunc, prefix string, store *storage.Storage, server *settin
 
 		if status != 0 {
 			txt := http.StatusText(status)
-			http.Error(w, strconv.Itoa(status)+" "+txt, status)
+			http.Error(w, fmt.Sprintf(`{"code":%d, "message": %s}`, status, txt), status)
 			return
 		}
 	})
